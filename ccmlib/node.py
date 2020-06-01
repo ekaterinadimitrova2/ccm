@@ -340,18 +340,33 @@ class Node(object):
         The batch_commitlog option gives an easier way to switch to batch
         commitlog (since it requires setting 2 options and unsetting one).
         """
-        if enabled:
-            values = {
-                "commitlog_sync": "batch",
-                "commitlog_sync_batch_window_in_ms": 5,
-                "commitlog_sync_period_in_ms": None
-            }
+        if self.get_cassandra_version() >= '4.0':
+            if enabled:
+                values = {
+                    "commitlog_sync": "batch",
+                    "commitlog_sync_batch_window": "5ms",
+                    "commitlog_sync_period": None
+                }
+            else:
+                values = {
+                    "commitlog_sync": "periodic",
+                    "commitlog_sync_batch_window": None,
+                    "commitlog_sync_period": "10000ms"
+                }
         else:
-            values = {
-                "commitlog_sync": "periodic",
-                "commitlog_sync_batch_window_in_ms": None,
-                "commitlog_sync_period_in_ms": 10000
-            }
+            if enabled:
+                values = {
+                    "commitlog_sync": "batch",
+                    "commitlog_sync_batch_window_in_ms": 5,
+                    "commitlog_sync_period_in_ms": None
+                }
+            else:
+                values = {
+                    "commitlog_sync": "periodic",
+                    "commitlog_sync_batch_window_in_ms": None,
+                    "commitlog_sync_period_in_ms": 10000
+                }
+
         self.set_configuration_options(values)
 
     def set_dse_configuration_options(self, values=None):
