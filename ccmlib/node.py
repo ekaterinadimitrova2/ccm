@@ -23,7 +23,6 @@ from datetime import datetime
 from distutils.version import LooseVersion  #pylint: disable=import-error, no-name-in-module
 
 import yaml
-from _pytest import logging
 from six import print_, string_types
 
 from ccmlib import common, extension
