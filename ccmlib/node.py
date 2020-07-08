@@ -20,6 +20,7 @@ from datetime import datetime
 from distutils.version import LooseVersion  #pylint: disable=import-error, no-name-in-module
 
 import yaml
+from _pytest import logging
 from six import print_, string_types
 
 from ccmlib import common, extension
@@ -531,8 +532,14 @@ class Node(object):
                 if line:
                     reads = reads + line
                     for e in tofind:
+                        # KATE: remove; only for testing
+                        log = logging.getLogger('test_short_read')
+                        strE = e
+                        log.info('(what we search for)e: ' + str(strE))
+                        log.info('line we search in: ' + line)
                         m = e.search(line)
                         if m:
+                            log.info("KATE: I found it")
                             matchings.append((line, m))
                             tofind.remove(e)
                             if len(tofind) == 0:
