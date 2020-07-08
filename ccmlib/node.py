@@ -15,6 +15,9 @@ import subprocess
 import sys
 import time
 import warnings
+
+import logging
+
 from collections import namedtuple
 from datetime import datetime
 from distutils.version import LooseVersion  #pylint: disable=import-error, no-name-in-module
